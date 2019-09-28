@@ -1,0 +1,41 @@
+#之前我们使用的都是application.properties，在这使用一次yml文件,
+#在workbench中建立了一个数据库database01，
+# 为了避免我们将.sql文件命名为schema‐*.sql或者data‐*.sql类型的
+# 默认规则：schema.sql，schema‐all.sql；
+#  我们还可以使用自定义的形式(就是department.sql)：由于schema是一个List，所以我们可以使用“-空格”来一个一个列出来
+#  注意：springboot 2.0必须加上initialization-mode: always才行，而且在控制台是看不到具体的execute schema,只能在数据库中有所体现
+#  Spring Boot2.x 必须添加 initialization-mode配置才会执行，默认为EMBEDDED也就是嵌入式数据库（H2这种），如果要在mysql下执行需要设置成为always
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/database01
+    driver-class-name: com.mysql.jdbc.Driver
+    schema:
+      - classpath:department.sql
+#      - classpath:employee.sql
+    initialization-mode: always
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    #   数据源其他配置.下面的这些属性在DataSourceProperties.java是找不到的，我们必须自己手写一个配置类（如DruidConfig）才行
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+
+
+
+

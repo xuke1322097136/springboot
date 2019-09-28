@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<div>
+    <div>[[#{user.name}]]：<input th:placeholder="#{user.name}"/></div>
+</div>
+<div>
+    <span><a th:href="@{/message(i18n_language=zh_CN)}">中文</a></span>
+    <span><a th:href="@{/message(i18n_language=en_US)}">英文</a></span>
+</div>
+
+</body>
+</html>

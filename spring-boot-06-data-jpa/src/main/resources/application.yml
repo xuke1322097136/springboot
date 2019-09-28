@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/jpa
+    driver-class-name: com.mysql.jdbc.Driver
+#    JPA相关的属性配置在JpaProperties中
+  jpa:
+    hibernate:
+      # 更新或者创建数据表，即它可以帮我们在数据库中创建表
+      ddl-auto: update
+   # 控制台显示SQL语句
+    show-sql: true

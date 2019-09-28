@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Dashboard Template for Bootstrap</title>
+		<!-- Bootstrap core CSS -->
+		<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="asserts/css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+		<style type="text/css">
+			/* Chart.js */
+			
+			@-webkit-keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			@keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			.chartjs-render-monitor {
+				-webkit-animation: chartjs-render-animation 0.001s;
+				animation: chartjs-render-animation 0.001s;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--引入抽取的topbar-->
+		<!--模板名：会使用thymeleaf的前后缀配置规则进行解析，在这使用的是 模板名：：片段名 的写法-->
+		<div th:replace="commons/bar::topbar"></div>
+
+		<div class="container-fluid">
+			<div class="row">
+				<!--引入侧边栏，在这使用的是 模板名：：选择器（就是bat.html中给侧边栏定义的id值） 的写法。
+				在这还引入了activeUri变量的值，用于bar.html页面中的三元表达式来判断是否高亮使用 -->
+				<div th:replace="commons/bar::#sidebar(activeUri='emps')"></div>
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+					<!--btn btn-sm表示的是小的按钮，btn-success表示的是绿颜色的按钮。
+					超链接本来就是GET方式的请求，所以不需要加上请求方式。将从list.html页面去到add.html页面，该操作在代码中（EmployeeController中）是GetMapping请求
+					这个和EmployeeController里面toAddPage()方法的请求方式得一致才行-->
+					<h2><a class="btn btn-sm btn-success" href="emp" th:href="@{/emp}">员工添加</a></h2>
+					<div class="table-responsive">
+						<table class="table table-striped table-sm">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>lastName</th>
+									<th>email</th>
+									<th>gender</th>
+									<th>department</th>
+									<th>birth</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							<!--由于之前的代码（EmployeeController）里边，model是放入到emps属性里边，所以在这需要跟那对应上。
+							取出emps里边的值，然后遍历里边的每一个值。注意在这是每一个emp对应的是一个tr标签，所以th:each在tr里边-->
+								<tr th:each="emp:${emps}">
+									<td th:text="${emp.id}"></td>
+									<!--lastName考虑换一种写法，采用行内写法-->
+									<td>[[${emp.lastName}]]</td>
+									<td th:text="${emp.email}"></td>
+									<td th:text="${emp.gender}==0?'女':'男'"></td>
+									<td th:text="${emp.department.departmentName}"></td>
+									<!--格式化员工的生日-->
+									<td th:text="${#dates.format(emp.birth, 'yyyy-MM-dd HH:mm')}"></td>
+									<td>
+										<!--btn btn-sm表示的是小的按钮，btn-primary表示的是蓝颜色的，btn-danger表示的是警告按钮
+										注意在这我们点编辑的时候我们需要传入员工的id值，千万记住是要拼接起来的，不能直接就写在反斜杠/后边-->
+										<a class="btn btn-sm btn-primary" th:href="@{/emp/}+${emp.id}">编辑</a>
+
+										<!--在这我们首先使用最原始的方式来实现删除操作，为每一个删除功能造一个form表单
+                                            <form th:action="@{/emp/}+${emp.id}" method="post">
+												<input type="hidden" name="_method" value="delete"/>
+												<button type="submit" class="btn btn-sm btn-danger deleteBtn">删除</button>
+											</form>
+											发现这种实现方式比较重，会为每一个用户的删除按钮都生成一个form表单，所以在这采用js和jquery的方式来实现
+										-->
+										<!--具体删除操作所携带的属性放在原来的button按钮中，用th:attr定义一个属性，用于下面jquery绑定action的具体地址-->
+										<button th:attr="del_uri=@{/emp/}+${emp.id}" class="btn btn-sm btn-danger deleteBtn">删除</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</main>
+				<!--在这定义一个删除员工的表单，指定一个id，方便下面的jquery引用-->
+				<form id="deleteEmpForm"  method="post">
+					<input type="hidden" name="_method" value="delete"/>
+				</form>
+
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+		<script type="text/javascript" src="asserts/js/popper.min.js" th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"></script>
+		<script type="text/javascript" src="asserts/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
+
+		<!-- Icons -->
+		<script type="text/javascript" src="asserts/js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
+		<script>
+			feather.replace()
+		</script>
+		<!--通过jquery的方式来触发删除操作，给deleteBtn绑定单击事件-->
+		<script>
+			$(".deleteBtn").click(function(){
+			    //this代表的是当前按钮，把表单的action地址改为$(this).attr("del_uri")，del_uri表示的是上面自定义的一个属性
+			    $("#deleteEmpForm").attr("action",$(this).attr("del_uri")).submit();
+			    return false;
+            });
+		</script>
+	</body>
+</html>

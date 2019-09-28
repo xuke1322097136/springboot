@@ -1,0 +1,13 @@
+person:
+# 在这last-name和lastName的效果是一样的，它会自动转换成lastName的
+#   last-name: hello
+#   age: 18
+#   boss: false
+#   birth: 2018/11/13
+#   maps: {k1: v1, k2: 22}
+#   lists:
+#     ‐ lisi
+#     ‐ zhaoliu
+#   dog:
+#     name: 小狗
+#     age: 12

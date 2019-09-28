@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: cn.edu.ustc.xk.SpringBoot02ymlConfigTests
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.204 s - in cn.edu.ustc.xk.SpringBoot02ymlConfigTests

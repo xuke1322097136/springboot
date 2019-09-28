@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- 加上xmlns:th这一段的作用就是加上thymeleaf的语法提示-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>成功页面！</h1>
+<!--将div里面的文本内容设置为我们指定的request域中的值，这里报错是IDEA的事，不用担心-->
+<!--如果我们单独查看success.html页面的话，我们看到的是“这是显示欢迎信息”，而如果经过模板引擎解析的话，我们可以看到后台的结果，即“你好”-->
+<!--我们使用thymeleaf中的属性来替换掉原生属性值，即th:id来代替id中的值
+ 最后页面中显示的结果 <div id="你好" class="你好">你好</div>-->
+<div id="div01" class="myDiv" th:id="${hello}" th:class="${hello}" th:text="${hello}">这是显示欢迎信息 </div>
+<hr/>
+
+<!--th:text表示的是会转义特殊字符，而th:utext表示的是不进行转义：<h1>标签被当成本意，代表的是大标题，不进行转义-->
+<div th:text="${hello}"></div>
+<div th:utext="${hello}"></div>
+<hr/>
+
+<!--用${users}取出request域中的内容，然后每一个内容放到变量user（即user:${users}中的user）中，
+最后用th:text（用${user}取出user变量中的值）来将数据填充到h4中,
+结果是3个h4，而下面的是一个h4里面含3个span-->
+<h4 th:text="${user}" th:each="user:${users}"></h4>
+<hr/>
+
+<h4>
+    <!--在这用一个行内写法，即[[...]]等价于th:text，[(...)]等价于th:utext-->
+    <span th:each="user:${users}">[[${user}]] </span>
+</h4>
+</body>
+</html>

@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/database01
+    driver-class-name: com.mysql.jdbc.Driver
+  #指定redis的主机地址
+  redis:
+    host: localhost
+
+#    设置驼峰命名法
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+#    开启mapper包下面的所有日志，即在控制台可以看到执行的SQL语句，类似于jpa下面的show-sql一个意思
+logging:
+  level:
+    cn.edu.ustc.xk.springboot.mapper: DEBUG
+
+#    可以查看自动配置类的报告，在这测试我们默认的缓存配置类是哪一个
+debug: true

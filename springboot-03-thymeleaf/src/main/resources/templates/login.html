@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Signin Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS 公共资源，利用模板引擎的表达式来修改一下资源引用，公共资源最好还是放入到webjars中去
+    发送/webjars下的请求，我们都要到/META-INF/resources/webjars/下面去查找
+    这里相当于我们要请求/webjars下的bootstrap/4.0.0/css/bootstrap.css
+    所以它会去找/META-INF/resources/webjars/下面的bootstrap/4.0.0/css/bootstrap.css-->
+    <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template 自定义的样式我们就直接引过来
+    @{}语法引进项目路径的好处就是当我们项目的整体路径发生变化的时候，
+    比如：我们配置了项目的整体路径：server.servlet.context-path=/crud
+    当我们访问项目路径的时候，他会给这些链接自动加上整体路径，即现在的路径为：/crud/......-->
+    <link href="asserts/css/signin.css" th:href="@{/asserts/css/signin.css}" rel="stylesheet">
+</head>
+
+<body class="text-center">
+       <!--user下面有一给叫login的请求，并且是post方式的请求，去的页面是dashboard.html页面-->
+<form class="form-signin" action="dashboard.html" th:action="@{/user/login}" method="post">
+    <img class="mb-4" th:src="@{/asserts/img/bootstrap-solid.svg}" src="asserts/img/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal" th:text="#{login.tip}">Please sign in</h1>
+    <!--判断,表示的是如果取出来的msg部位空的话，我们就把它显示出来，具体的使用方法可以参照thymeleaf官方文档-->
+    <p style="color: #ff0000" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+    <label class="sr-only" th:text="#{login.username}">Username</label>
+    <input type="text" name="username" class="form-control" placeholder="Username" th:placeholder="#{login.username}" required="" autofocus="">
+    <label class="sr-only" th:text="#{login.password}">Password</label>
+    <input type="password" name="password" class="form-control" placeholder="Password" th:placeholder="#{login.password}" required="">
+    <div class="checkbox mb-3">
+        <label>
+            <!--在这不能跟上面一样使用th:text来输入，因为input框是基于字节数的，没有标签体，而th:text是在标签体里的
+            所以只能使用行内表达式来输入-->
+            <input type="checkbox" value="remember-me"/> [[#{login.remember}]]
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{login.button}">Sign in</button>
+    <p class="mt-5 mb-3 text-muted">© 2018-2019</p>
+    <!--其实等价于index.html?l=zh_CN，只是在thymeleaf中，我们使用小括号（）来携带参数的，
+    并且采用的是kv形式的，value必须加上引号-->
+    <a class="btn btn-sm" th:href="@{/index.html(i18n_language='zh_CN')}">中文</a>
+    <a class="btn btn-sm" th:href="@{/index.html(i18n_language='en_US')}">English</a>
+</form>
+</body>
+
+</html>
