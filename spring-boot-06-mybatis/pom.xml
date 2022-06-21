@@ -44,7 +44,7 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<!--<scope>runtime</scope>-->
-			<version>5.1.46</version>
+			<version>8.0.28</version>
 		</dependency>
 
 		<!--搜索maven repository找到druid 1.1.12的maven依赖，引入druid数据源-->
